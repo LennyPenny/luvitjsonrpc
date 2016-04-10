@@ -6,9 +6,10 @@ local function makesimplerpc()
 	}
 
 	function simplerpc:handlejsonrpcrequest(ws, msg, payload)
-
 		if not self[payload.method] then return end
+
 		local res = self[payload.method](unpack(payload.params))
+
 		if not payload.id then return end
 
 		msg.payload = json.stringify{
@@ -26,6 +27,7 @@ local function makesimplerpc()
 		if #params == 1 then
 			params = params[1]
 		end
+
 		ws.writer{
 			opcode = 1,
 			payload = json.stringify{
@@ -80,6 +82,7 @@ local function makesimplerpc()
 		path = "/lmao"
 	}, function(req, read, write)
 		print("New Connection!")
+
 		table.insert(simplerpc.connections, setmetatable({
 			writer = write,
 			running = {},
@@ -95,6 +98,7 @@ local function makesimplerpc()
 				end
 			end
 		}))
+
 		local pos = #simplerpc.connections
 		local me = simplerpc.connections[pos]
 
@@ -103,16 +107,15 @@ local function makesimplerpc()
 		end
 
 		for message in read do
-			--for k, v in pairs(message) do
-			--	print(k, v )
-			--end
 			if message then
 				simplerpc:handlemsg(me, message, json.parse(message.payload))
 			end
 		end
 
 		table.remove(simplerpc.connections, pos)
+
 		print("closed: ", pos)
+
 		write()
 	end))
 
