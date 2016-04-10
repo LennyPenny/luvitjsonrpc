@@ -1,5 +1,5 @@
   return {
-    name = "simplerpc",
+    name = "SimpleRPC",
     version = "0.0.1",
     description = "A simple description of my little package.",
     tags = { "lua", "lit", "luvit" },
