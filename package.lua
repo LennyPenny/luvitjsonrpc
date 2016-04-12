@@ -1,6 +1,5 @@
 return {
 	name = "LennyPenny/simplerpc",
-	version = "1.0.0",
 	description = "A simple description of my little package.",
 	tags = { "lua", "lit", "luvit" },
 	license = "MIT",
