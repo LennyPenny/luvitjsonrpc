@@ -27,28 +27,20 @@ return function (path, port)
 			params = params[1]
 		end
 
-		if cb then --normal request
-			ws.writer{
-				opcode = 1,
-				payload = json.stringify{
-					jsonrpc = "2.0",
-					method = method,
-					params = params,
-					id = ws.indexer
-				}
+		ws.writer{
+			opcode = 1,
+			payload = json.stringify{
+				jsonrpc = "2.0",
+				method = method,
+				params = params,
+				id = cb and ws.indexer or nil
 			}
+		}
+		
+		if cb then
 			ws.running[ws.indexer] = cb
 
 			ws.indexer = ws.indexer + 1
-		else --notification request
-			ws.writer{
-				opcode = 1,
-				payload = json.stringify{
-					jsonrpc = "2.0",
-					method = method,
-					params = params,
-				}
-			}
 		end
 	end
 
